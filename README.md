@@ -1,11 +1,17 @@
 <div align=center>
+
 # simunometro
 Um cronômetro CLI para simulados que imita o quadro de horas do *Enem*. 
+
 </div>
+
+<div align="center">
 
 | ./simunometro |
 |:-----------:|
 | ![simunometro](Images/preview-simunometro.png?raw=true) |
+
+</div>
 
 ## Instalação
 - Compile da fonte:
