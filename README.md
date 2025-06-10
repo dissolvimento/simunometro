@@ -16,7 +16,7 @@ Um cronômetro CLI para simulados que imita o quadro de horas do *Enem*.
 ## Instalação
 - Compile da fonte:
 ```bash
-wget https://github.com/dissolvimento/simunometro/simunometro.c
+wget https://raw.githubusercontent.com/dissolvimento/simunometro/refs/heads/main/simunometro.c
 gcc -o simunometro simunometro.c
 ./simunometro
 ```
