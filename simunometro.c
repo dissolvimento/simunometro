@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <unistd.h>     // p/ sleep()
 #include <time.h>       // p/ time()
+#include <sys/ioctl.h>  // p/ pegar o tamanho do terminal e centralizar
+
 #define RED "\033[1;31m"
 #define GREEN "\033[0;32m"
 #define RESET "\033[0m" // reseta as cores do terminal
@@ -52,8 +54,38 @@ int main() {
     // loop infinito: imprime e atualiza tabela a cada 30min
     while(1) {
         system("clear"); // limpa a tela a cada ciclo
+        
+        // pegar o tamanho do terminal pra posteriormente centralizar o simunometro
+        struct winsize w;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        /*
+            STDOUT_FILENO -> saída do terminal
+            TIOCGWINSZ -> comando da ioctl que pega o tamanho da janela do terminal
 
+            o &w vai ser preenchido com algo como:
+                struct winsize {
+                    unsigned short ws_row;    // número de linhas
+                    unsigned short ws_col;    // número de colunas
+                    ...
+                };
+        */
+        
+        // cada horário ocupa 6 colunas (ex: 14:00\0), total 6 · 6 = 36 colunas
+        int table_width = 6 * 6;
+        int horizontal_padding = (w.ws_col - table_width) / 2; // quantidade de colunas do tamanho do terminal - quantidade de caracteres / 2 (meio)
+        int vertical_padding = (w.ws_row - 2) / 2; // pega o tamanho vertical do terminal, diminui por 2 (quantidade de linhas) e divide por dois (metade do padding pra cima e metade pra baixo), deixando centralizado
+
+        // centralização vertical
+        for (int s = 0; s < vertical_padding; s++) {
+            printf("\n");
+        }
+
+        // centralização horizontal + impressão da table
         for(row = 0, i = 0; row < 2; row++) {
+            for (int s = 0; s < horizontal_padding; s++) {
+                printf(" ");
+            }
+
             for(column = 0; column < 6; column++, i++){
                 if(i <= counter) { // verifica se o i é menor que o verificador de 30min (counter)
                     // "marca" de vermelho quando o tempo tiver passado
